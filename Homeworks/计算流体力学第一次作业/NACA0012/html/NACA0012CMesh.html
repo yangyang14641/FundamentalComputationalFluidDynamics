@@ -1,0 +1,392 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NACA0012CMesh</title><meta name="generator" content="MATLAB 8.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-10-22"><meta name="DC.source" content="NACA0012CMesh.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Geometry parameters</a></li><li><a href="#3">Mesh parameters</a></li><li><a href="#4">Plot Airfoil in Z plane and W plane</a></li><li><a href="#5">Generate Mesh</a></li><li><a href="#6">Plot Mesh in MATLAB</a></li><li><a href="#7">Output Mesh in tecplot file format</a></li></ul></div><pre class="codeinput"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="comment">%%%%%% Program name: NACA0012CMesh.n</span>
+<span class="comment">%%%%%% Program Aurthor: Yang Yang</span>
+<span class="comment">%%%%%% Date: 2015.09.23</span>
+<span class="comment">%%%%%% Version 1.0</span>
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+</pre><h2>Geometry parameters<a name="2"></a></h2><pre class="codeinput">x0 = 0.1;         <span class="comment">% First points for airfoil</span>
+</pre><h2>Mesh parameters<a name="3"></a></h2><pre class="codeinput">N_xi =   150;     <span class="comment">% Mesh number in xi direction</span>
+N_eta =  100;     <span class="comment">% Mesh number in eta direction</span>
+
+N_eps = 20;       <span class="comment">% Mesh number before Airfoil</span>
+N = 50;           <span class="comment">% Mesh number in Airfoil</span>
+
+xi_max = 5;       <span class="comment">% maximun xi</span>
+eta_max = 3;      <span class="comment">% maximun eta</span>
+</pre><h2>Plot Airfoil in Z plane and W plane<a name="4"></a></h2><pre class="codeinput">x_span = [x0, x0+1];         <span class="comment">% Airfoil span</span>
+x = meshfun1( x_span, N );   <span class="comment">% generate nodes' x</span>
+y = NACA0012( x , x0);       <span class="comment">% generate nodes' y</span>
+z = x + sqrt(-1)*y;
+
+w = sqrt(z);                 <span class="comment">% conformal mapping</span>
+xi = real(w);                <span class="comment">% separate xi</span>
+eta = imag(w);               <span class="comment">% separate eta</span>
+
+<span class="comment">% plot airfoil in Z plane</span>
+figure(<span class="string">'Color'</span>,[1 1 1]);
+plot(x,y,<span class="string">'r-o'</span>,<span class="string">'linewidth'</span>,2);
+hold <span class="string">on</span>;
+plot(x,-y,<span class="string">'b-o'</span>,<span class="string">'linewidth'</span>,2);
+title(<span class="string">'NACA0012 Airfoil in Z plane'</span>);
+xlabel(<span class="string">'x'</span>);
+ylabel(<span class="string">'y'</span>);
+axis <span class="string">equal</span>;
+
+<span class="comment">% plot airfoil in W plane</span>
+figure(<span class="string">'Color'</span>,[1 1 1]);
+plot(xi,eta,<span class="string">'r-o'</span>,<span class="string">'linewidth'</span>,2);
+hold <span class="string">on</span>;
+plot(xi,-eta,<span class="string">'b-o'</span>,<span class="string">'linewidth'</span>,2);
+title(<span class="string">'NACA0012 Airfoil in W plane'</span>);
+xlabel(<span class="string">'\xi'</span>);
+ylabel(<span class="string">'\eta'</span>);
+axis <span class="string">equal</span>;
+</pre><img vspace="5" hspace="5" src="NACA0012CMesh_01.png" alt=""> <img vspace="5" hspace="5" src="NACA0012CMesh_02.png" alt=""> <h2>Generate Mesh<a name="5"></a></h2><pre class="codeinput">mesh_xi = zeros(N_xi,N_eta);         <span class="comment">% Array to store mesh nodes' xi</span>
+mesh_eta = zeros(N_xi,N_eta);        <span class="comment">% Array to store mesh nodes' eta</span>
+
+<span class="comment">% generate first xi edge</span>
+xi_before = linspace(0,min(xi),N_eps);
+xi_behind = linspace(max(xi),xi_max, (N_xi - N_eps - N));
+xi_edge_mesh_xi = [xi_before, xi, xi_behind];
+xi_edge_mesh_eta = [zeros(1,length(xi_before)), eta, zeros(1,length(xi_behind))];
+
+<span class="comment">% generate delta in eta edge</span>
+eta_span = [0, eta_max];
+[eta_edge_mesh_eta,delta_eta] = meshfun2( eta_span, N_eta );
+
+<span class="comment">% generate mesh</span>
+
+mesh_xi(:,1) =  xi_edge_mesh_xi;
+mesh_eta(:,1) = xi_edge_mesh_eta;
+<span class="keyword">for</span> j = 2:N_eta
+    <span class="keyword">for</span> i = 1:N_xi
+        mesh_xi(i,j) = mesh_xi(i,j-1);
+        mesh_eta(i,j) = mesh_eta(i,j-1) + delta_eta(j-1);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Confromal Mapping</span>
+W = mesh_xi + sqrt(-1)*mesh_eta;
+Z = W.^2;
+X = real(Z);
+Y = imag(Z);
+</pre><h2>Plot Mesh in MATLAB<a name="6"></a></h2><p>plot mesh in W plane</p><pre class="codeinput">figure(<span class="string">'Color'</span>,[1 1 1]);
+<span class="keyword">for</span> j = 1:N_eta
+    <span class="keyword">for</span> i = 1:N_xi - 1
+       plot([mesh_xi(i,j),mesh_xi(i+1,j)],[mesh_eta(i,j),mesh_eta(i+1,j)],<span class="string">'b.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> j = 1:N_eta
+    <span class="keyword">for</span> i = 1:N_xi - 1
+       plot([mesh_xi(i,j),mesh_xi(i+1,j)],[-mesh_eta(i,j),-mesh_eta(i+1,j)],<span class="string">'r.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:N_xi
+    <span class="keyword">for</span> j = 1:N_eta - 1
+       plot([mesh_xi(i,j),mesh_xi(i,j+1)],[mesh_eta(i,j),mesh_eta(i,j+1)],<span class="string">'b.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> i = 1:N_xi
+    <span class="keyword">for</span> j = 1:N_eta - 1
+       plot([mesh_xi(i,j),mesh_xi(i,j+1)],[-mesh_eta(i,j),-mesh_eta(i,j+1)],<span class="string">'r.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+hold <span class="string">off</span>;
+title(<span class="string">'Mesh in W plane'</span>);
+xlabel(<span class="string">'\xi'</span>);
+ylabel(<span class="string">'\eta'</span>);
+
+
+<span class="comment">% plot mesh in Z plane</span>
+figure(<span class="string">'Color'</span>,[1 1 1]);
+<span class="keyword">for</span> i = 1:N_xi
+    <span class="keyword">for</span> j = 1:N_eta - 1
+       plot([X(i,j),X(i,j+1)],[Y(i,j),Y(i,j+1)],<span class="string">'b.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> j = 1:N_eta
+    <span class="keyword">for</span> i = 1:N_xi - 1
+       plot([X(i,j),X(i+1,j)],[Y(i,j),Y(i+1,j)],<span class="string">'b.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> i = 1:N_xi
+    <span class="keyword">for</span> j = 1:N_eta - 1
+       plot([X(i,j),X(i,j+1)],[-Y(i,j),-Y(i,j+1)],<span class="string">'r.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> j = 1:N_eta
+    <span class="keyword">for</span> i = 1:N_xi - 1
+       plot([X(i,j),X(i+1,j)],[-Y(i,j),-Y(i+1,j)],<span class="string">'r.-'</span>);
+       hold <span class="string">on</span>;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+hold <span class="string">off</span>;
+title(<span class="string">'Mesh in Z plane'</span>);
+xlabel(<span class="string">'x'</span>);
+ylabel(<span class="string">'y'</span>);
+</pre><img vspace="5" hspace="5" src="NACA0012CMesh_03.png" alt=""> <img vspace="5" hspace="5" src="NACA0012CMesh_04.png" alt=""> <h2>Output Mesh in tecplot file format<a name="7"></a></h2><pre class="codeinput">fp = fopen(<span class="string">'NACA0012CMesh.dat'</span>,<span class="string">'w'</span>);
+fprintf(fp,<span class="string">'TITLE = NACA0012\n'</span>);
+fprintf(fp,<span class="string">'VARIABLES = "X", "Y"\n'</span>);
+fprintf(fp,<span class="string">'ZONE I =%d, J =%d,F = point\n'</span>,N_xi,N_eta);
+<span class="keyword">for</span> j = 1:N_eta
+    <span class="keyword">for</span> i = 1:N_xi
+        fprintf(fp,<span class="string">'%e, %e\n'</span>,X(i,j),Y(i,j));
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+fclose(fp);
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Program name: NACA0012CMesh.n
+%%%%%% Program Aurthor: Yang Yang
+%%%%%% Date: 2015.09.23
+%%%%%% Version 1.0
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Geometry parameters
+x0 = 0.1;         % First points for airfoil
+
+%% Mesh parameters
+N_xi =   150;     % Mesh number in xi direction
+N_eta =  100;     % Mesh number in eta direction
+
+N_eps = 20;       % Mesh number before Airfoil
+N = 50;           % Mesh number in Airfoil
+
+xi_max = 5;       % maximun xi
+eta_max = 3;      % maximun eta
+
+%% Plot Airfoil in Z plane and W plane
+x_span = [x0, x0+1];         % Airfoil span
+x = meshfun1( x_span, N );   % generate nodes' x 
+y = NACA0012( x , x0);       % generate nodes' y
+z = x + sqrt(-1)*y;          
+
+w = sqrt(z);                 % conformal mapping
+xi = real(w);                % separate xi
+eta = imag(w);               % separate eta
+
+% plot airfoil in Z plane
+figure('Color',[1 1 1]);
+plot(x,y,'r-o','linewidth',2);
+hold on;
+plot(x,-y,'b-o','linewidth',2);
+title('NACA0012 Airfoil in Z plane');
+xlabel('x');
+ylabel('y');
+axis equal;
+
+% plot airfoil in W plane
+figure('Color',[1 1 1]);
+plot(xi,eta,'r-o','linewidth',2);
+hold on;
+plot(xi,-eta,'b-o','linewidth',2);
+title('NACA0012 Airfoil in W plane');
+xlabel('\xi');
+ylabel('\eta');
+axis equal;
+
+%% Generate Mesh
+mesh_xi = zeros(N_xi,N_eta);         % Array to store mesh nodes' xi 
+mesh_eta = zeros(N_xi,N_eta);        % Array to store mesh nodes' eta
+
+% generate first xi edge
+xi_before = linspace(0,min(xi),N_eps);
+xi_behind = linspace(max(xi),xi_max, (N_xi - N_eps - N));
+xi_edge_mesh_xi = [xi_before, xi, xi_behind];
+xi_edge_mesh_eta = [zeros(1,length(xi_before)), eta, zeros(1,length(xi_behind))];
+
+% generate delta in eta edge
+eta_span = [0, eta_max];
+[eta_edge_mesh_eta,delta_eta] = meshfun2( eta_span, N_eta );
+
+% generate mesh
+
+mesh_xi(:,1) =  xi_edge_mesh_xi;
+mesh_eta(:,1) = xi_edge_mesh_eta;
+for j = 2:N_eta
+    for i = 1:N_xi
+        mesh_xi(i,j) = mesh_xi(i,j-1);       
+        mesh_eta(i,j) = mesh_eta(i,j-1) + delta_eta(j-1);      
+    end
+end
+
+% Confromal Mapping
+W = mesh_xi + sqrt(-1)*mesh_eta;
+Z = W.^2; 
+X = real(Z);
+Y = imag(Z);
+
+%% Plot Mesh in MATLAB
+% plot mesh in W plane
+figure('Color',[1 1 1]);
+for j = 1:N_eta
+    for i = 1:N_xi - 1
+       plot([mesh_xi(i,j),mesh_xi(i+1,j)],[mesh_eta(i,j),mesh_eta(i+1,j)],'b.-');
+       hold on;
+    end
+end
+for j = 1:N_eta
+    for i = 1:N_xi - 1
+       plot([mesh_xi(i,j),mesh_xi(i+1,j)],[-mesh_eta(i,j),-mesh_eta(i+1,j)],'r.-');
+       hold on;
+    end
+end
+
+for i = 1:N_xi
+    for j = 1:N_eta - 1
+       plot([mesh_xi(i,j),mesh_xi(i,j+1)],[mesh_eta(i,j),mesh_eta(i,j+1)],'b.-');
+       hold on;
+    end
+end
+for i = 1:N_xi
+    for j = 1:N_eta - 1
+       plot([mesh_xi(i,j),mesh_xi(i,j+1)],[-mesh_eta(i,j),-mesh_eta(i,j+1)],'r.-');
+       hold on;
+    end
+end
+hold off;
+title('Mesh in W plane');
+xlabel('\xi');
+ylabel('\eta');
+
+
+% plot mesh in Z plane
+figure('Color',[1 1 1]);
+for i = 1:N_xi
+    for j = 1:N_eta - 1
+       plot([X(i,j),X(i,j+1)],[Y(i,j),Y(i,j+1)],'b.-');
+       hold on;
+    end
+end
+for j = 1:N_eta
+    for i = 1:N_xi - 1
+       plot([X(i,j),X(i+1,j)],[Y(i,j),Y(i+1,j)],'b.-');
+       hold on;
+    end
+end
+
+for i = 1:N_xi
+    for j = 1:N_eta - 1
+       plot([X(i,j),X(i,j+1)],[-Y(i,j),-Y(i,j+1)],'r.-');
+       hold on;
+    end
+end
+for j = 1:N_eta
+    for i = 1:N_xi - 1
+       plot([X(i,j),X(i+1,j)],[-Y(i,j),-Y(i+1,j)],'r.-');
+       hold on;
+    end
+end
+hold off;
+title('Mesh in Z plane');
+xlabel('x');
+ylabel('y');
+
+
+
+%% Output Mesh in tecplot file format
+fp = fopen('NACA0012CMesh.dat','w');
+fprintf(fp,'TITLE = NACA0012\n');
+fprintf(fp,'VARIABLES = "X", "Y"\n');
+fprintf(fp,'ZONE I =%d, J =%d,F = point\n',N_xi,N_eta);
+for j = 1:N_eta
+    for i = 1:N_xi
+        fprintf(fp,'%e, %e\n',X(i,j),Y(i,j));
+    end
+end
+fclose(fp);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>

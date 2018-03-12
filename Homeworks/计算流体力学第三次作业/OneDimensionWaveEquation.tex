@@ -1,0 +1,115 @@
+%2multibyte Version: 5.50.0.2960 CodePage: 936
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}%
+\setcounter{MaxMatrixCols}{30}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.50.0.2960}
+%TCIDATA{Codepage=936}
+%TCIDATA{CSTFile=40 LaTeX article.cst}
+%TCIDATA{Created=Sunday, November 08, 2015 20:36:30}
+%TCIDATA{LastRevised=Sunday, November 08, 2015 21:27:55}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Blank - Standard LaTeX Article">}
+%BeginMSIPreambleData
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+%EndMSIPreambleData
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\begin{document}
+PDE%
+\[
+\frac{\partial u}{\partial t}+\frac{\partial u}{\partial x}=0
+\]
+
+
+First-order upwind scheme%
+
+\[
+\frac{u_{j}^{n+1}-u_{j}^{n}}{\Delta t}=\frac{u_{j}^{n}-u_{j-1}^{n}}{\Delta x}%
+\]%
+\[
+u_{j}^{n+1}=u_{j}^{n}-c\left(  u_{j}^{n}-u_{j-1}^{n}\right)
+\]%
+\[
+c=\frac{\Delta t}{\Delta x}%
+\]
+
+
+Implicit scheme%
+\[
+\frac{u_{j}^{n+1}-u_{j}^{n}}{\Delta t}=\frac{u_{j+1}^{n+1}-u_{j-1}^{n+1}%
+}{2\Delta x}%
+\]%
+\[
+-\frac{c}{2}u_{j-1}^{n+1}+u_{j}^{n+1}+\frac{c}{2}u_{j+1}^{n+1}=u_{j}^{n}%
+\]
+%
+
+\[
+c=\frac{\Delta t}{\Delta x}%
+\]
+
+
+Lax scheme%
+\[
+\frac{u_{j}^{n+1}-\frac{1}{2}\left(  u_{j+1}^{n}+u_{j-1}^{n}\right)  }{\Delta
+t}=\frac{u_{j+1}^{n}-u_{j-1}^{n}}{2\Delta x}%
+\]%
+\[
+u_{j}^{n+1}=\frac{1}{2}\left(  1-c\right)  u_{j+1}^{n}+\frac{1}{2}\left(
+1+c\right)  u_{j-1}^{n}%
+\]
+
+
+Lax-wndroff scheme%
+\[
+\frac{u_{j}^{n+1}-u_{j}^{n}}{\Delta t}+\frac{u_{j+1}^{n}-u_{j-1}^{n}}{2\Delta
+x}=\frac{1}{2}\Delta t\frac{u_{j+1}^{n}-2u_{j}^{n}+u_{j-1}^{n}}{\Delta x^{2}}%
+\]%
+\begin{align*}
+u_{j}^{n+1}  & =u_{j}^{n}-\frac{1}{2}c\left(  u_{j+1}^{n}-u_{j-1}^{n}\right)
++\frac{1}{2}c^{2}\left(  u_{j+1}^{n}-2u_{j}^{n}+u_{j-1}^{n}\right)  \\
+& =\left(  1-c^{2}\right)  u_{j}^{n}+\frac{1}{2}c^{2}u_{j+1}^{n}-\frac{1}%
+{2}cu_{j+1}^{n}+\frac{1}{2}c^{2}u_{j-1}^{n}+\frac{1}{2}cu_{j-1}^{n}\\
+& =\left(  1-c^{2}\right)  u_{j}^{n}+\frac{1}{2}c\left(  c-1\right)
+u_{j+1}^{n}+\frac{1}{2}c\left(  c+1\right)  u_{j-1}^{n}%
+\end{align*}
+
+
+Leap-frog scheme%
+\[
+\frac{u_{j}^{n+1}-u_{j}^{n-1}}{2\Delta t}=\frac{u_{j+1}^{n}-u_{j-1}^{n}%
+}{2\Delta x}%
+\]%
+\[
+u_{j}^{n+1}=u_{j}^{n-1}-c\left(  u_{j+1}^{n}-u_{j-1}^{n}\right)
+\]
+
+
+
+\end{document}

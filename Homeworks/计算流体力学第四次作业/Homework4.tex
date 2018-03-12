@@ -1,0 +1,483 @@
+%2multibyte Version: 5.50.0.2960 CodePage: 936
+\documentclass{article}%
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}%
+\setcounter{MaxMatrixCols}{30}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.50.0.2960}
+%TCIDATA{Codepage=936}
+%TCIDATA{CSTFile=40 LaTeX article.cst}
+%TCIDATA{Created=Wednesday, November 25, 2015 21:51:12}
+%TCIDATA{LastRevised=Friday, November 27, 2015 14:46:24}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Blank - Standard LaTeX Article">}
+%BeginMSIPreambleData
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+%EndMSIPreambleData
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\begin{document}
+
+\begin{center}
+\textbf{Solve ODE BVP problem by Weighted Residual method}
+\end{center}
+
+\begin{flushright}
+\textbf{Yang Yang}
+
+\textbf{2015/11/26}
+\end{flushright}
+
+Define a ODE BVP problem:%
+\begin{align*}
+L\left(  u\right)   &  =\frac{d^{2}u}{dx^{2}}+u+x=0,\quad\left(  0\leq
+x\leq1\right) \\
+u\left(  0\right)   &  =u\left(  1\right)  =0
+\end{align*}
+
+
+in fact the problem has a exact solution%
+\[
+u\left(  x\right)  =\frac{\sin\left(  x\right)  }{\sin\left(  1\right)  }-x
+\]
+
+
+Next we find a test function satisfied boundary condition:%
+\[
+u=x\left(  1-x\right)  \left(  a_{0}+a_{1}x+a_{2}x^{2}+a_{3}x^{3}+a_{4}%
+x^{4}+...+a_{n}x^{n}\right)
+\]
+
+
+Some derive
+
+Residual of equation%
+\[
+R=Lu-f
+\]
+
+
+and we want the integral of residual equal to zero:
+\begin{align*}
+\left\langle R,\omega_{i}\right\rangle  &  =\int_{\Omega}R\omega_{i}%
+d\Omega=0\\
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega &  =0
+\end{align*}
+
+
+\textbf{1.Compute by hand}
+
+test function:%
+\[
+u=x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right)
+\]
+
+
+here $a_{0}$ and $a_{1}$ are constant which need to be worked out.
+
+(1) Collocation method:
+
+Points:%
+\[
+x_{1}=\frac{1}{3},\quad x_{2}=\frac{2}{3}%
+\]%
+\begin{align*}
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega &  =0\\
+Weight  &  :\omega_{i}=\delta\left(  x-x_{i}\right)
+\end{align*}%
+\begin{align*}
+u  &  =x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right) \\
+\left(  Lu-f\right)   &  =-4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x
+\end{align*}%
+\begin{align*}
+&  \int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega\\
+&  =\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\delta\left(  x-x_{i}\right)  dx
+\end{align*}%
+\[
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega=0
+\]
+
+
+So we obtain linear algebra equations:%
+\begin{align*}
+\left.  \left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)  a_{1}+x\left(
+1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]  \right\vert _{x=x_{1}}
+&  =0\\
+\left.  \left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)  a_{1}+x\left(
+1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]  \right\vert _{x=x_{2}}
+&  =0
+\end{align*}%
+\begin{align*}
+\frac{2}{27}a_{1}-\frac{16}{9}a_{0}+\frac{1}{3}  &  =0\\
+-\frac{50}{27}a_{1}-\frac{16}{9}a_{0}+\frac{2}{3}  &  =0
+\end{align*}
+
+
+Solve these two equation%
+\[
+a_{0}=\frac{81}{416},\quad a_{1}=\frac{9}{52}%
+\]
+
+
+Approximation Solution:%
+\begin{align*}
+u  &  =x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right) \\
+u  &  =x\left(  1-x\right)  \left(  \frac{81}{416}+\frac{9}{52}x\right)
+\end{align*}
+
+
+(2) Sub-domain method:
+
+Sub-domains:%
+\begin{align*}
+D_{1}  &  :0<x<\frac{1}{2}\\
+D_{2}  &  :0<x<1
+\end{align*}%
+\begin{align*}
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega &  =0\\
+Weight  &  :\omega_{i}=\left\{
+\begin{array}
+[c]{c}%
+1,\quad x\in D_{i}\\
+0,\quad x\notin D_{i}%
+\end{array}
+\right.
+\end{align*}%
+\begin{align*}
+&  \int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega\\
+&  =\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{i}dx
+\end{align*}%
+\[
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega=0
+\]%
+\begin{align*}
+\int_{0}^{\frac{1}{2}}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{i}dx  &  =0\\
+\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{i}dx  &  =0
+\end{align*}
+
+
+Then we obtain two linear algebra equations:%
+\begin{align*}
+\frac{53}{192}a_{1}-\frac{11}{12}a_{0}+\frac{1}{8}  &  =0\\
+-\frac{11}{12}a_{1}-\frac{11}{6}a_{0}+\frac{1}{2}  &  =0
+\end{align*}
+
+
+Solve these equations%
+\begin{align*}
+a_{0}  &  =\frac{97}{517}\\
+a_{1}  &  =\frac{8}{47}%
+\end{align*}
+
+
+Approximation solution%
+\begin{align*}
+u  &  =x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right) \\
+u  &  =x\left(  1-x\right)  \left(  \frac{97}{517}+\frac{8}{47}x\right)
+\end{align*}
+
+
+(3) Moment method:
+
+Weight function:%
+\[
+\omega_{i}=\left\vert \mathbf{r}\right\vert ^{i-1}%
+\]
+
+
+and in our case%
+
+\begin{align*}
+\omega_{1}\left(  x\right)   &  =1\\
+\omega_{2}\left(  x\right)   &  =x
+\end{align*}%
+\[
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega=0
+\]%
+\begin{align*}
+\int_{0}^{\frac{1}{2}}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]  dx  &
+=0\\
+\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]  xdx  &
+=0
+\end{align*}
+
+
+we obtain two linearalgebra equations%
+\begin{align*}
+-\frac{11}{12}a_{1}-\frac{11}{6}a_{0}+\frac{1}{2}  &  =0\\
+-\frac{19}{20}a_{1}-\frac{11}{12}a_{0}+\frac{1}{3}  &  =0
+\end{align*}
+
+
+Solve these linearalgebra equations we obtain%
+\[
+a_{0}=\frac{122}{649},\quad a_{1}=\frac{10}{59}%
+\]
+
+
+So the approximation solution is%
+\[
+u\left(  x\right)  =x\left(  1-x\right)  \left(  \frac{122}{649}x+\frac
+{10}{59}\right)
+\]
+
+
+(4) Least-Square method:
+
+Target functional:%
+
+\[
+J=\int_{\Omega}R^{2}d\Omega
+\]
+
+
+minimum Target functional%
+\begin{align*}
+\frac{\partial J}{\partial a_{i}}  &  =\frac{\partial}{\partial a_{i}}%
+\int_{\Omega}R^{2}d\Omega\\
+&  =\int_{\Omega}\frac{\partial}{\partial a_{i}}R^{2}d\Omega\\
+&  =\int_{\Omega}2R\frac{\partial R}{\partial a_{i}}d\Omega=0
+\end{align*}
+
+
+So we know weight function is%
+\[
+\omega_{i}=\frac{\partial R}{\partial a_{i}}%
+\]%
+\begin{align*}
+\omega_{0}  &  =-2+x\left(  1-x\right) \\
+\omega_{1}  &  =-6x+2+x^{2}\left(  1-x\right)
+\end{align*}
+%
+
+\[
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega=0
+\]%
+\begin{align*}
+\int_{0}^{\frac{1}{2}}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{0}dx  &  =0\\
+\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{1}dx  &  =0
+\end{align*}
+
+
+Then we obtain two linear algebra equations:%
+\begin{align*}
+\frac{101}{60}a_{1}+\frac{101}{30}a_{0}-\frac{11}{12}  &  =0\\
+\frac{131}{35}a_{1}+\frac{101}{60}a_{0}-\frac{19}{20}  &  =0
+\end{align*}
+
+
+Solve these equations:%
+\begin{align*}
+a_{0}  &  =\frac{46161}{246137}\\
+a_{1}  &  =\frac{413}{2437}%
+\end{align*}
+
+
+Approximation result%
+\begin{align*}
+u  &  =x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right) \\
+u  &  =x\left(  1-x\right)  \left(  \frac{46161}{246137}+\frac{413}%
+{2437}x\right)
+\end{align*}
+
+
+(5) Galerkin method:%
+\[
+u=x\left(  1-x\right)  \left(  a_{0}+a_{1}x\right)
+\]%
+\[
+u=a_{0}x\left(  1-x\right)  +a_{1}x^{2}\left(  1-x\right)
+\]%
+\begin{align*}
+\varphi_{0}  &  =x\left(  1-x\right) \\
+\varphi_{1}  &  =x^{2}\left(  1-x\right)
+\end{align*}%
+\begin{align*}
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega &  =0\\
+Wieght\quad function  &  :\omega_{i}=\varphi_{i}%
+\end{align*}%
+\begin{align*}
+\int_{0}^{\frac{1}{2}}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{0}dx  &  =0\\
+\int_{0}^{1}\left[  -4\,a_{1}\,x-2\,a_{0}+2\,\left(  1-x\right)
+a_{1}+x\left(  1-x\right)  \left(  a_{1}\,x+a_{0}\right)  +x\right]
+\omega_{1}dx  &  =0
+\end{align*}
+
+
+So we obtain two linear algebra equations
+\begin{align*}
+-\frac{3}{20}a_{1}-\frac{3}{10}a_{0}+\frac{1}{12}  &  =0\\
+-\frac{13}{105}a_{1}-\frac{3}{20}a_{0}+\frac{1}{20}  &  =0
+\end{align*}
+
+
+solve these equations%
+\begin{align*}
+a_{0}  &  =\frac{71}{369}\\
+a_{1}  &  =\frac{7}{41}%
+\end{align*}%
+\[
+u=x\left(  1-x\right)  \left(  \frac{71}{369}x+\frac{7}{41}\right)
+\]
+
+
+Compare plot of these weighted residual method:
+
+\begin{center}%
+%TCIMACRO{\FRAME{ftbpF}{6.5916in}{4.1675in}{0pt}{}{}{multimethodcompare.eps}%
+%{\special{ language "Scientific Word";  type "GRAPHIC";
+%maintain-aspect-ratio TRUE;  display "USEDEF";  valid_file "F";
+%width 6.5916in;  height 4.1675in;  depth 0pt;  original-width 9.5415in;
+%original-height 6.0174in;  cropleft "0";  croptop "1";  cropright "1";
+%cropbottom "0";  filename 'MultiMethodCompare.eps';file-properties "XNPEU";}}
+%}%
+%BeginExpansion
+\begin{figure}[ptb]%
+\centering
+\includegraphics[
+height=4.1675in,
+width=6.5916in
+]%
+{MultiMethodCompare.eps}%
+\end{figure}
+%EndExpansion
+
+
+
+\end{center}
+
+\bigskip
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+\bigskip
+
+\textbf{2.Galerkin method for any given }$n$
+
+approximation polynomial%
+\[
+u=x\left(  1-x\right)  \left(  a_{0}+a_{1}x+a_{2}x^{2}+a_{3}x^{3}+a_{4}%
+x^{4}+...+a_{n}x^{n}\right)
+\]
+
+
+and base functions%
+\begin{align*}
+\varphi_{0}\left(  x\right)   &  =x\left(  1-x\right) \\
+\varphi_{1}\left(  x\right)   &  =x^{2}\left(  1-x\right) \\
+\varphi_{2}\left(  x\right)   &  =x^{3}\left(  1-x\right) \\
+&  ...\\
+\varphi_{n}\left(  x\right)   &  =x^{n+1}\left(  1-x\right)
+\end{align*}
+
+
+and approximation polynomial%
+\[
+u\left(  x\right)  =%
+%TCIMACRO{\dsum \limits_{i=0}^{n}}%
+%BeginExpansion
+{\displaystyle\sum\limits_{i=0}^{n}}
+%EndExpansion
+a_{i}\varphi_{i}\left(  x\right)
+\]
+
+
+basic function%
+\[
+\omega_{i}\left(  x\right)  =\varphi_{i}\left(  x\right)
+\]
+
+
+Weighted residual method%
+\begin{align*}
+\int_{\Omega}\left(  Lu-f\right)  \omega_{i}d\Omega &  =0\\
+Wieght\quad function  &  :\omega_{i}=\varphi_{i}%
+\end{align*}
+
+
+Then we'll get linear Algebra equations:%
+\begin{align*}
+f_{1}\left(  a_{0},a_{1},...,a_{n}\right)   &  =0\\
+f_{2}\left(  a_{0},a_{1},...,a_{n}\right)   &  =0\\
+f_{3}\left(  a_{0},a_{1},...,a_{n}\right)   &  =0\\
+&  ...\\
+f_{n}\left(  a_{0},a_{1},...,a_{n}\right)   &  =0
+\end{align*}
+
+
+Solve these linear algebra equations, we obtain these coefficients in the
+approxiamtion polynomial.%
+\begin{align*}
+&  a_{0},a_{1},...,a_{n}\\
+u  &  =x\left(  1-x\right)  \left(  a_{0}+a_{1}x+a_{2}x^{2}+a_{3}x^{3}%
++a_{4}x^{4}+...+a_{n}x^{n}\right)
+\end{align*}
+
+
+We using Maple to realize this procedure.
+
+\begin{center}%
+%TCIMACRO{\FRAME{ftbpF}{6.0701in}{4.1667in}{0pt}{}{}{galerkin.eps}%
+%{\special{ language "Scientific Word";  type "GRAPHIC";
+%maintain-aspect-ratio TRUE;  display "USEDEF";  valid_file "F";
+%width 6.0701in;  height 4.1667in;  depth 0pt;  original-width 9.8191in;
+%original-height 6.7265in;  cropleft "0";  croptop "1";  cropright "1";
+%cropbottom "0";  filename 'Galerkin.eps';file-properties "XNPEU";}} }%
+%BeginExpansion
+\begin{figure}[ptb]%
+\centering
+\includegraphics[
+height=4.1667in,
+width=6.0701in
+]%
+{Galerkin.eps}%
+\end{figure}
+%EndExpansion
+
+
+
+\end{center}
+
+
+\end{document}
